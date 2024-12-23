@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { invoke } from '@tauri-apps/api/core';
 import {
     Sidebar,
     SidebarContent,
@@ -10,14 +8,11 @@ import {
     SidebarMenuItem,
     SidebarProvider,
 } from '@/components/ui/sidebar';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
-const greetMsg = ref('');
-const name = ref('');
-
-async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsg.value = await invoke('greet', { name: name.value });
-}
+const route = useRoute();
+const isSettingsPage = computed(() => route.path === '/settings');
 </script>
 
 <template>
@@ -26,11 +21,11 @@ async function greet() {
             <SidebarContent>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton>
+                        <SidebarMenuButton class="text-lg">
                             <router-link to="/">Home</router-link>
                         </SidebarMenuButton>
-                        <SidebarMenuButton>
-                            <router-link to="/about">About</router-link>
+                        <SidebarMenuButton class="text-md">
+                            <router-link to="/settings">Settings</router-link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
@@ -40,6 +35,7 @@ async function greet() {
         <SidebarInset class="bg-gray-100">
             <header
                 class="flex h-16 shrink-0 items-center bg-white gap-2 border-b px-4 sticky top-0 z-50"
+                v-show="!isSettingsPage"
             >
                 <Separator orientation="vertical" class="mr-2 h-4" />
             </header>

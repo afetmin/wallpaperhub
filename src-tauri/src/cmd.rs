@@ -18,3 +18,8 @@ pub async fn get_img_list(number: u8) -> Vec<BingImage> {
         vec![]
     }
 }
+
+#[tauri::command]
+pub async fn open_url(url: String) {
+    open::that(url).unwrap()
+}

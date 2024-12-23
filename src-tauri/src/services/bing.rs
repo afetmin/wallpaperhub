@@ -65,26 +65,45 @@ struct CachedBingImageRes {
 
 pub async fn get_cached_bing_image_res(number: u8) -> Result<BingImageRes, reqwest::Error> {
     let mut cache = CACHED_BING_IMAGE_RES.lock().await;
-    let today = chrono::Local::now().naive_local();
         println!("Cached data ========> {:?}", *cache);
+    let today = chrono::Local::now().naive_local();
     if let Some(CachedBingImageRes { data, end_date }) = &*cache {
         if today.date() <= *end_date {
             return Ok(data.clone());
         }
     }
 
-    let url_params = UrlParams {
-        index: 0,
-        number,
-        country: Some("en-US".to_string()),
+    let mut all_images = Vec::new();
+    let mut hold_end_date = today.date();
+    let mut hold_tooltips = Tooltips {
+        loading: "正在加载...".to_string(),
+        walle: "此图片不能下载用作壁纸。".to_string(),
+        walls: "下载今日美图。仅限用作桌面壁纸。".to_string(),
     };
-    let new_data = BingImageRes::new(url_params).await?;
+
+    for i in 0..=number / 8 {
+        let url_params = UrlParams {
+            index: i * 8,
+            number: 8,
+            country: Some("en-US".to_string()),
+        };
+        let bing_image_res = BingImageRes::new(url_params).await?;
+        hold_end_date = NaiveDate::parse_from_str(&bing_image_res.images[0].enddate, "%Y%m%d").unwrap();
+        hold_tooltips = bing_image_res.tooltips.clone();
+        all_images.extend(bing_image_res.images);
+    }
+
+    let merged_data = BingImageRes {
+        images: all_images,
+        tooltips: hold_tooltips,
+    };
+
     *cache = Some(CachedBingImageRes {
-        data: new_data.clone(),
+        data: merged_data.clone(),
         end_date: today.date(),
     });
 
-    Ok(new_data)
+    Ok(merged_data)
 }
 
 pub fn get_bing_url(url_params: UrlParams) -> String {
