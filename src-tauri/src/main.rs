@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    devo_lib::run()
+    wallpaperhub_lib::run()
 }

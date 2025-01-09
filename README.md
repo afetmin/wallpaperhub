@@ -1,17 +1,14 @@
-# Bing壁纸软件
+# Wallpaper壁纸软件
 
 ## 项目介绍
-一个bing壁纸软件，可以查看壁纸，~~下载壁纸，设置壁纸~~。
+一个基于wallpaper api的壁纸软件，可以查看，预览，下载，设置壁纸。
 
 #### 技术栈：
+- Rust
 - Tauri
 - Vue3
-- Vite
-- Shadcn-ui
-- Tailwindcss
-- Typescript
 
 #### TODO
-- [ ] 自定义请求数量
+- [ ] 查看和预览
 - [ ] 下载壁纸
 - [ ] 设置壁纸

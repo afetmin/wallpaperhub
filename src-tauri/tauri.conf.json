@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "devo",
+  "productName": "wallpaperhub",
   "version": "0.1.0",
-  "identifier": "com.devo.app",
+  "identifier": "com.wallpaperhub.app",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "devo",
+        "title": "wallpaperhub",
         "width": 800,
         "height": 600
       }
